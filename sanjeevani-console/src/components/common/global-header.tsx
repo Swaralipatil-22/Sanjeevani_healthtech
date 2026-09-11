@@ -19,7 +19,11 @@ const resolveBreadcrumbs = (pathname: string): string[] => {
   return match ? BREADCRUMB_ROUTE_MAPPINGS[match]! : [];
 };
 
-export default function GlobalHeader({ onToggle }: { onToggle: () => void }) {
+export default function GlobalHeader({
+  onOpenDrawer,
+}: {
+  onOpenDrawer: () => void;
+}) {
   const pathname = usePathname();
   const { setTheme, resolvedTheme } = useTheme();
   const crumbs = resolveBreadcrumbs(pathname);
@@ -29,12 +33,18 @@ export default function GlobalHeader({ onToggle }: { onToggle: () => void }) {
       <Button
         variant="ghost"
         size="icon-sm"
-        onClick={onToggle}
+        onClick={onOpenDrawer}
         className="text-muted-foreground lg:hidden"
-        aria-label="Toggle navigation"
+        aria-label="Open navigation"
       >
         <PanelLeftIcon className="size-4" />
       </Button>
+
+      {/* On mobile the page title stands in for the breadcrumb trail, which is
+          too wide to be useful at that size. */}
+      <span className="truncate text-xs font-medium md:hidden">
+        {crumbs.at(-1) ?? "Sanjeevani"}
+      </span>
 
       <Separator orientation="vertical" className="hidden h-4 lg:block" />
 
