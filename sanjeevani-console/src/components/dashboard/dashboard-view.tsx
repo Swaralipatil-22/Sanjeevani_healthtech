@@ -13,8 +13,10 @@ import {
 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
+import type { DateRange } from "@/components/common/date-range-control";
 import type { AnalyticsDistribution, AnalyticsOverview, AnalyticsTrends } from "@/types";
 
+import DateRangeControl from "@/components/common/date-range-control";
 import GlobalToolbar from "@/components/common/global-toolbar";
 import { PageError } from "@/components/common/page-error";
 import { StatTile, StatTileSkeleton } from "@/components/common/stat-tile";
@@ -36,7 +38,6 @@ import {
   PERMISSION_SUB_MODULES,
   PERMISSIONS,
 } from "@/constants/global/enums";
-import { DATE_PRESETS } from "@/constants/global/labelvalues";
 import {
   getAnalyticsDistribution,
   getAnalyticsOverview,
@@ -52,7 +53,10 @@ type Granularity = "day" | "month" | "week";
 export default function DashboardView() {
   const facilities = useAppSelector((state) => state.masters.facilities);
 
-  const [rangeInDays, setRangeInDays] = useState(90);
+  const [range, setRange] = useState<DateRange>({
+    from: dayjs().subtract(90, "day").format("YYYY-MM-DD"),
+    to: dayjs().format("YYYY-MM-DD"),
+  });
   const [facilityId, setFacilityId] = useState<string>("ALL");
   const [granularity, setGranularity] = useState<Granularity>("week");
 
@@ -67,12 +71,12 @@ export default function DashboardView() {
 
   const parameters = useMemo(
     () => ({
-      from: dayjs().subtract(rangeInDays, "day").format("YYYY-MM-DD"),
-      to: dayjs().format("YYYY-MM-DD"),
+      from: range.from,
+      to: range.to,
       granularity,
       ...(facilityId === "ALL" ? {} : { facility_id: facilityId }),
     }),
-    [rangeInDays, granularity, facilityId],
+    [range, granularity, facilityId],
   );
 
   const fetchAnalytics = useCallback(async () => {
@@ -119,21 +123,7 @@ export default function DashboardView() {
         }}
       >
         {/* All filters sit in one row above the charts. */}
-        <Select
-          value={String(rangeInDays)}
-          onValueChange={(value) => setRangeInDays(Number(value))}
-        >
-          <SelectTrigger className="h-8 min-h-8 w-36">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {DATE_PRESETS.map((preset) => (
-              <SelectItem key={preset.days} value={String(preset.days)}>
-                {preset.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <DateRangeControl value={range} onChange={setRange} />
 
         <Select value={facilityId} onValueChange={setFacilityId}>
           <SelectTrigger className="h-8 min-h-8 w-44">

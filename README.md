@@ -99,6 +99,7 @@ Sanjeevani/
 ├── docs/
 │   ├── ARCHITECTURE.md
 │   ├── API.md
+│   ├── USER-GUIDE.md
 │   ├── DEPLOYMENT.md
 │   └── SELF-ASSESSMENT.md
 ├── docker-compose.yml
@@ -173,6 +174,9 @@ All three share the password `Sanjeevani@123` (configurable via
 
 Signing in as each of the three is the fastest way to see the access model
 working: the sidebar itself changes shape per role.
+
+For how the application is actually used — registering a patient, recording an
+encounter, reading the dashboard — see [docs/USER-GUIDE.md](docs/USER-GUIDE.md).
 
 ---
 
