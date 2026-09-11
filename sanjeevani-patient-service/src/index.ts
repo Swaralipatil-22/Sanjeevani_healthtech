@@ -57,9 +57,31 @@ const buildApplication = (): Express => {
 
 export const application = buildApplication();
 
+/**
+ * Idempotent database bootstrap.
+ *
+ * A long-running server calls this once at startup. A serverless deployment
+ * calls it on every invocation, where all but the first cold start resolve
+ * the already-settled promise. Seeding is deliberately excluded - it belongs
+ * to a deliberate startup, not to request handling.
+ */
+let bootstrapPromise: Promise<void> | null = null;
+
+export const ensureBootstrapped = async (): Promise<void> => {
+  bootstrapPromise ??= databaseManager.bootstrap();
+
+  try {
+    await bootstrapPromise;
+  } catch (error) {
+    // Let the next invocation retry rather than caching the failure forever.
+    bootstrapPromise = null;
+    throw error;
+  }
+};
+
 const start = async (): Promise<void> => {
   try {
-    await databaseManager.bootstrap();
+    await ensureBootstrapped();
     if (env.DB_SEED) await runSeeder();
 
     const server = application.listen(env.PORT, () => {
@@ -83,5 +105,6 @@ const start = async (): Promise<void> => {
   }
 };
 
-// Vitest imports `application` directly; only a direct run should bind a port.
-if (!process.env.VITEST) await start();
+// Vitest and the Vercel function both import `application` directly; only a
+// direct run should bind a port.
+if (!process.env.VITEST && !process.env.VERCEL) await start();
