@@ -1,0 +1,375 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ---------------------------------------------------------------------------
+   DESIGN TOKENS
+   Brand hue is 192 - a clinical teal. Every token is declared in OKLCH so the
+   light and dark ladders stay perceptually matched rather than eyeballed.
+--------------------------------------------------------------------------- */
+
+:root {
+  --radius: 0.45rem;
+
+  --background: oklch(0.985 0.002 190);
+  --foreground: oklch(0.16 0.008 200);
+
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.16 0.008 200);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.16 0.008 200);
+
+  --primary: oklch(0.48 0.09 192);
+  --primary-strong: oklch(0.43 0.085 192);
+  --primary-deep: oklch(0.33 0.065 196);
+  --primary-foreground: oklch(0.99 0.01 192);
+
+  --secondary: oklch(0.965 0.004 195);
+  --secondary-foreground: oklch(0.24 0.012 200);
+
+  --muted: oklch(0.968 0.003 195);
+  --muted-foreground: oklch(0.53 0.012 200);
+
+  --accent: oklch(0.95 0.02 192);
+  --accent-foreground: oklch(0.33 0.065 196);
+
+  --destructive: oklch(0.55 0.2 27);
+  --destructive-foreground: oklch(0.99 0.01 27);
+
+  --border: oklch(0.915 0.005 195);
+  --input: oklch(0.915 0.005 195);
+  --ring: oklch(0.48 0.09 192);
+
+  --sidebar: oklch(1 0 0);
+  --sidebar-foreground: oklch(0.16 0.008 200);
+  --sidebar-primary: oklch(0.48 0.09 192);
+  --sidebar-primary-foreground: oklch(0.99 0.01 192);
+  --sidebar-accent: oklch(0.95 0.02 192);
+  --sidebar-accent-foreground: oklch(0.33 0.065 196);
+  --sidebar-border: oklch(0.915 0.005 195);
+  --sidebar-ring: oklch(0.48 0.09 192);
+
+  /* Single-hue teal ramp - sequential magnitude and single-series marks. */
+  --chart-1: oklch(0.84 0.055 190);
+  --chart-2: oklch(0.72 0.085 191);
+  --chart-3: oklch(0.6 0.1 192);
+  --chart-4: oklch(0.48 0.09 192);
+  --chart-5: oklch(0.37 0.075 195);
+
+  /* Clinical acuity. Never used alone - always paired with a text label. */
+  --severity-mild: #0ca30c;
+  --severity-moderate: #fab219;
+  --severity-severe: #ec835a;
+  --severity-critical: #d03b3b;
+}
+
+:root:not([data-theme="light"]) {
+  @media (prefers-color-scheme: dark) {
+    --background: oklch(0.145 0.006 200);
+    --foreground: oklch(0.985 0.002 190);
+
+    --card: oklch(0.205 0.008 200);
+    --card-foreground: oklch(0.985 0.002 190);
+    --popover: oklch(0.205 0.008 200);
+    --popover-foreground: oklch(0.985 0.002 190);
+
+    --primary: oklch(0.72 0.1 190);
+    --primary-strong: oklch(0.62 0.1 190);
+    --primary-deep: oklch(0.48 0.09 192);
+    --primary-foreground: oklch(0.16 0.02 200);
+
+    --secondary: oklch(0.27 0.008 200);
+    --secondary-foreground: oklch(0.985 0.002 190);
+
+    --muted: oklch(0.27 0.008 200);
+    --muted-foreground: oklch(0.7 0.012 195);
+
+    --accent: oklch(0.3 0.03 195);
+    --accent-foreground: oklch(0.9 0.04 190);
+
+    --destructive: oklch(0.68 0.19 24);
+    --destructive-foreground: oklch(0.15 0.02 24);
+
+    --border: oklch(1 0 0 / 12%);
+    --input: oklch(1 0 0 / 16%);
+    --ring: oklch(0.72 0.1 190);
+
+    --sidebar: oklch(0.205 0.008 200);
+    --sidebar-foreground: oklch(0.985 0.002 190);
+    --sidebar-primary: oklch(0.72 0.1 190);
+    --sidebar-primary-foreground: oklch(0.16 0.02 200);
+    --sidebar-accent: oklch(0.3 0.03 195);
+    --sidebar-accent-foreground: oklch(0.9 0.04 190);
+    --sidebar-border: oklch(1 0 0 / 12%);
+    --sidebar-ring: oklch(0.72 0.1 190);
+
+    --chart-1: oklch(0.88 0.05 190);
+    --chart-2: oklch(0.78 0.08 190);
+    --chart-3: oklch(0.68 0.1 191);
+    --chart-4: oklch(0.58 0.1 192);
+    --chart-5: oklch(0.46 0.09 194);
+  }
+}
+
+:root[data-theme="dark"],
+.dark {
+  --background: oklch(0.145 0.006 200);
+  --foreground: oklch(0.985 0.002 190);
+
+  --card: oklch(0.205 0.008 200);
+  --card-foreground: oklch(0.985 0.002 190);
+  --popover: oklch(0.205 0.008 200);
+  --popover-foreground: oklch(0.985 0.002 190);
+
+  --primary: oklch(0.72 0.1 190);
+  --primary-strong: oklch(0.62 0.1 190);
+  --primary-deep: oklch(0.48 0.09 192);
+  --primary-foreground: oklch(0.16 0.02 200);
+
+  --secondary: oklch(0.27 0.008 200);
+  --secondary-foreground: oklch(0.985 0.002 190);
+
+  --muted: oklch(0.27 0.008 200);
+  --muted-foreground: oklch(0.7 0.012 195);
+
+  --accent: oklch(0.3 0.03 195);
+  --accent-foreground: oklch(0.9 0.04 190);
+
+  --destructive: oklch(0.68 0.19 24);
+  --destructive-foreground: oklch(0.15 0.02 24);
+
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 16%);
+  --ring: oklch(0.72 0.1 190);
+
+  --sidebar: oklch(0.205 0.008 200);
+  --sidebar-foreground: oklch(0.985 0.002 190);
+  --sidebar-primary: oklch(0.72 0.1 190);
+  --sidebar-primary-foreground: oklch(0.16 0.02 200);
+  --sidebar-accent: oklch(0.3 0.03 195);
+  --sidebar-accent-foreground: oklch(0.9 0.04 190);
+  --sidebar-border: oklch(1 0 0 / 12%);
+  --sidebar-ring: oklch(0.72 0.1 190);
+
+  --chart-1: oklch(0.88 0.05 190);
+  --chart-2: oklch(0.78 0.08 190);
+  --chart-3: oklch(0.68 0.1 191);
+  --chart-4: oklch(0.58 0.1 192);
+  --chart-5: oklch(0.46 0.09 194);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-strong: var(--primary-strong);
+  --color-primary-deep: var(--primary-deep);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains);
+  --font-display: var(--font-manrope);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground cursor-default overflow-x-hidden;
+    font-feature-settings: "cv02", "cv03", "cv04";
+  }
+
+  a {
+    @apply hover:text-primary transition-colors;
+  }
+
+  button:not(:disabled) {
+    @apply hover:cursor-pointer;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   CLINICAL ACUITY INDICATORS
+   A pulsing dot draws the eye to deterioration in a dense table without
+   relying on colour alone - every dot sits beside its text label.
+--------------------------------------------------------------------------- */
+
+.acuity-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  flex-shrink: 0;
+}
+
+.acuity-dot-critical {
+  background: var(--severity-critical);
+  animation: acuity-pulse 1.6s infinite ease-in-out;
+}
+
+.acuity-dot-severe {
+  background: var(--severity-severe);
+}
+
+.acuity-dot-moderate {
+  background: var(--severity-moderate);
+}
+
+.acuity-dot-mild {
+  background: var(--severity-mild);
+  box-shadow: 0 0 8px rgb(12 163 12 / 0.4);
+}
+
+@keyframes acuity-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.82);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   CHART CHROME
+   ApexCharts renders its own tooltip shell; it is stripped so each chart can
+   inject a card that matches the design system in both themes.
+--------------------------------------------------------------------------- */
+
+.apexcharts-tooltip,
+.apexcharts-tooltip.apexcharts-theme-light,
+.apexcharts-tooltip.apexcharts-theme-dark {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+
+.apexcharts-xaxistooltip,
+.apexcharts-yaxistooltip {
+  display: none !important;
+}
+
+.apexcharts-tooltip-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 12px;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.12);
+  min-width: 150px;
+}
+
+.apexcharts-tooltip-title {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted-foreground);
+  margin-bottom: 6px;
+}
+
+.apexcharts-tooltip-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--foreground);
+}
+
+.apexcharts-tooltip-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.apexcharts-tooltip-value {
+  margin-left: auto;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------------------------------------------------------------------------
+   SCROLLBARS
+   Invisible until the container is hovered, so dense pages stay calm.
+--------------------------------------------------------------------------- */
+
+.overflow-auto,
+.overflow-y-auto,
+.overflow-x-auto {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+  transition: scrollbar-color 0.2s ease;
+}
+
+.overflow-auto:hover,
+.overflow-y-auto:hover,
+.overflow-x-auto:hover {
+  scrollbar-color: oklch(0.72 0 0 / 45%) transparent;
+}
+
+.overflow-auto::-webkit-scrollbar,
+.overflow-y-auto::-webkit-scrollbar,
+.overflow-x-auto::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+.overflow-auto::-webkit-scrollbar-thumb,
+.overflow-y-auto::-webkit-scrollbar-thumb,
+.overflow-x-auto::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 9999px;
+}
+
+.overflow-auto:hover::-webkit-scrollbar-thumb,
+.overflow-y-auto:hover::-webkit-scrollbar-thumb,
+.overflow-x-auto:hover::-webkit-scrollbar-thumb {
+  background: oklch(0.72 0 0 / 45%);
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

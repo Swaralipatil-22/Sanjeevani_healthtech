@@ -1,0 +1,63 @@
+# Render blueprint: provisions PostgreSQL and the API in one deploy.
+# The console is deployed separately to Vercel (see docs/DEPLOYMENT.md).
+
+databases:
+  - name: sanjeevani-postgres
+    databaseName: sanjeevani
+    user: sanjeevani
+    plan: free
+
+services:
+  - type: web
+    name: sanjeevani-patient-service
+    runtime: docker
+    plan: free
+    rootDir: sanjeevani-patient-service
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /patient-service/health-check
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 8000
+      - key: SERVICE_BASE_PATH
+        value: /patient-service
+      - key: ALLOWED_HOSTNAMES
+        value: "*"
+      # Set this to the deployed console origin once Vercel has issued it.
+      - key: ALLOWED_ORIGINS
+        sync: false
+      - key: DB_SSL
+        value: true
+      - key: DB_SYNC
+        value: true
+      - key: DB_SEED
+        value: true
+      - key: DB_HOST
+        fromDatabase:
+          name: sanjeevani-postgres
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: sanjeevani-postgres
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: sanjeevani-postgres
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: sanjeevani-postgres
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: sanjeevani-postgres
+          property: password
+      - key: JWT_SECRET_KEY
+        generateValue: true
+      - key: AES_ENCRYPTION_KEY
+        generateValue: true
+      - key: AES_ENCRYPTION_IV
+        generateValue: true
+      - key: SEED_DEFAULT_PASSWORD
+        sync: false

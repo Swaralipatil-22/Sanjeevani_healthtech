@@ -1,0 +1,61 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: sanjeevani-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: sanjeevani
+      POSTGRES_USER: sanjeevani
+      POSTGRES_PASSWORD: sanjeevani
+    ports:
+      - "5432:5432"
+    volumes:
+      - sanjeevani-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sanjeevani -d sanjeevani"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  patient-service:
+    build:
+      context: ./sanjeevani-patient-service
+    container_name: sanjeevani-patient-service
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 8000
+      SERVICE_BASE_PATH: /patient-service
+      ALLOWED_ORIGINS: http://localhost:3000
+      ALLOWED_HOSTNAMES: "*"
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: sanjeevani
+      DB_USERNAME: sanjeevani
+      DB_PASSWORD: sanjeevani
+      DB_SYNC: "true"
+      DB_SEED: "true"
+      JWT_SECRET_KEY: change_me_in_production
+      AES_ENCRYPTION_KEY: change_me_in_production_key
+      AES_ENCRYPTION_IV: change_me_iv_16
+    ports:
+      - "8000:8000"
+
+  console:
+    build:
+      context: ./sanjeevani-console
+    container_name: sanjeevani-console
+    restart: unless-stopped
+    depends_on:
+      - patient-service
+    environment:
+      NODE_ENV: production
+      PATIENT_SERVICE_INTERNAL_ENDPOINT: http://patient-service:8000
+    ports:
+      - "3000:3000"
+
+volumes:
+  sanjeevani-postgres-data:
