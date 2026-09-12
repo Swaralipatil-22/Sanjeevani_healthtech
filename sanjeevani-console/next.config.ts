@@ -4,7 +4,9 @@ const PATIENT_SERVICE_ENDPOINT =
   process.env.PATIENT_SERVICE_INTERNAL_ENDPOINT ?? "http://localhost:8000";
 
 const nextConfig: NextConfig = {
-  output: "standalone",
+  // Standalone output is what keeps the Docker image small, but Vercel does
+  // its own output tracing and the two collide, so it is self-host only.
+  ...(process.env.VERCEL ? {} : { output: "standalone" as const }),
   reactStrictMode: true,
   poweredByHeader: false,
 

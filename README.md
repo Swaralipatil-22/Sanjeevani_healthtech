@@ -7,6 +7,18 @@ identifier.
 
 Built as a submission for the **HealthTech Patient Data Dashboard** assignment.
 
+### Live
+
+| | |
+|---|---|
+| **Console** | <https://sanjeevani-console-theta.vercel.app> |
+| **API health** | <https://sanjeevani-patient-service.vercel.app/patient-service/health-check> |
+| **Source** | <https://github.com/Swaralipatil-22/Sanjeevani_healthtech> |
+
+Sign in with any of the [demo accounts](#demo-accounts) below — password
+`Sanjeevani@123`. Signing in as each of the three roles in turn is the quickest
+way to see the access model working.
+
 | | |
 |---|---|
 | **API** | Node.js 20+ · Express 5 · TypeScript (ESM) · Sequelize 6 · PostgreSQL |
