@@ -79,9 +79,3 @@ export const login = async (
 
   return { success: true, redirect_to: destiny || "/" };
 };
-
-export const logout = async (): Promise<void> => {
-  const store = await cookies();
-  store.delete(AUTH_COOKIE);
-  store.delete("requested_destiny");
-};

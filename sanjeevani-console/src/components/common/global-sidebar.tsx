@@ -285,11 +285,13 @@ export default function GlobalSidebar(props: GlobalSidebarProps) {
 
               <DropdownMenuSeparator />
 
+              {/* A plain anchor, not a Link: logout is a Route Handler, and a
+                  client-side navigation would never reach it. */}
               <DropdownMenuItem variant="destructive" asChild>
-                <Link href={ROUTES.AUTH.LOGOUT}>
+                <a href={ROUTES.AUTH.LOGOUT}>
                   <LogOutIcon />
                   Sign out
-                </Link>
+                </a>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
