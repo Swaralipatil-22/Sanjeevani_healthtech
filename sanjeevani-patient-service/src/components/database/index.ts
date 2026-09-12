@@ -1,5 +1,6 @@
 import type { Model, ModelStatic } from "sequelize";
 
+import pg from "pg";
 import { Sequelize } from "sequelize";
 
 import type { ModelExtendedInstance } from "@/components/database/hooks.js";
@@ -45,6 +46,9 @@ class DatabaseManager {
   constructor() {
     this.driver = new Sequelize({
       dialect: "postgres",
+      // Sequelize would otherwise `require("pg")` at runtime, which a
+      // serverless bundler cannot trace - so the driver is passed explicitly.
+      dialectModule: pg,
       host: env.DB_HOST,
       port: env.DB_PORT,
       database: env.DB_NAME,
