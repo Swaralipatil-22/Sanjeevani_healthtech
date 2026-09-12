@@ -1,4 +1,4 @@
-# Self-assessment
+  # Self-assessment
 
 > A draft written to the brief's prompt — architecture choices, trade-offs, UX
 > decisions, edge cases handled, and potential improvements. Please read it

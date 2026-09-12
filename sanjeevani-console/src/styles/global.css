@@ -64,8 +64,12 @@
   --severity-critical: #d03b3b;
 }
 
-:root:not([data-theme="light"]) {
-  @media (prefers-color-scheme: dark) {
+/* next-themes is configured with `attribute="class"`, so an explicit choice
+   lands as `.light` / `.dark` on the root element - never `data-theme`. The
+   OS preference must therefore yield to a `.light` class, or picking light on
+   a dark-mode machine leaves every surface dark. */
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
     --background: oklch(0.145 0.006 200);
     --foreground: oklch(0.985 0.002 190);
 
@@ -112,7 +116,7 @@
   }
 }
 
-:root[data-theme="dark"],
+:root.dark,
 .dark {
   --background: oklch(0.145 0.006 200);
   --foreground: oklch(0.985 0.002 190);
