@@ -46,9 +46,10 @@ export default function proxy(request: NextRequest): NextResponse {
     return NextResponse.next({ request: { headers } });
   }
 
-  const isPrivate = PRIVATE_ROUTE_PREFIXES.some((prefix) =>
-    pathname.startsWith(prefix),
-  );
+  // "/" is matched exactly - as a prefix it would capture every route.
+  const isPrivate =
+    pathname === "/" ||
+    PRIVATE_ROUTE_PREFIXES.some((prefix) => pathname.startsWith(prefix));
 
   if (isPrivate && !isTokenValid(token)) {
     const response = NextResponse.redirect(
