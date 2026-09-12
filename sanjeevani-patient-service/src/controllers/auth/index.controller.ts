@@ -178,9 +178,17 @@ export const getProfile = async (
       request.decoded_user!.role_id,
     );
 
+    // `role` is lifted out of the nested association so this endpoint returns
+    // the same shape as /auth/login - the console reads `role` from both.
+    const record = user.toJSON() as Record<string, unknown>;
+
     response.customResponse(
       200,
-      { ...(user.toJSON() as Record<string, unknown>), permissions },
+      {
+        ...record,
+        role: _.get(record, "role_details.name"),
+        permissions,
+      },
       true,
       request.request_id,
       request.request_timestamp,

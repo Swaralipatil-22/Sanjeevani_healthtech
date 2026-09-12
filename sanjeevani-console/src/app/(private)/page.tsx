@@ -1,5 +1,6 @@
 "use client";
 
+import _ from "lodash";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
@@ -16,15 +17,20 @@ import { useAppSelector } from "@/store/hooks";
  */
 export default function RootPage() {
   const router = useRouter();
-  const role = useAppSelector((state) => state.profile.data?.role);
+  const profile = useAppSelector((state) => state.profile);
 
   useEffect(() => {
-    if (!role) return;
+    // SessionProvider only renders children once hydration has settled, so
+    // this runs with whatever the session produced. It never waits on the
+    // role itself - an unknown role still has to resolve somewhere rather
+    // than stranding the user on a splash screen.
+    const role =
+      profile.data?.role ?? _.get(profile.data, "role_details.name");
 
     router.replace(
       role === ROLES.ADMIN ? ROUTES.DASHBOARD : ROUTES.ENCOUNTERS.LIST,
     );
-  }, [role, router]);
+  }, [profile, router]);
 
   return <SplashScreen />;
 }
