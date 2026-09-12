@@ -6,7 +6,7 @@ facilities, and district administrators.
 If you are setting the system up rather than using it, see the
 [README](../README.md) instead.
 
----
+-----
 
 ## Signing in
 
